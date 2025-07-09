@@ -797,6 +797,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bomb
       objectReference: {fileID: 0}
+    - target: {fileID: 3807444683850649032, guid: b67a2004c6f2a4f4d9a22bc1f5be37ef, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807444683850649032, guid: b67a2004c6f2a4f4d9a22bc1f5be37ef, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3807444683850649032, guid: b67a2004c6f2a4f4d9a22bc1f5be37ef, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6278010543414855579, guid: b67a2004c6f2a4f4d9a22bc1f5be37ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
