@@ -23,6 +23,7 @@ public class Bomb : MonoBehaviour
 
     private void BombForce()
     {
+        // 감지 범위
         Collider[] colliders = Physics.OverlapSphere(transform.position, bombRange, layerMask);
 
         foreach (var collider in colliders)
@@ -30,7 +31,7 @@ public class Bomb : MonoBehaviour
             Rigidbody rb = collider.GetComponent<Rigidbody>();
 
             // AddExplosionForce(폭발 파워, 폭발 위치, 폭발 범위, 폭발 높이)
-            rb.AddExplosionForce(500f, transform.position, bombRange, 1f);
+            rb.AddExplosionForce(300f, transform.position, bombRange, 1f);
         }
 
         Destroy(gameObject);

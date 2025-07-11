@@ -1,28 +1,48 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class HanoiTower : MonoBehaviour
 {
-    public enum HanoiLevel { Lv1 = 3, Lv2, Lv3}
+    public enum HanoiLevel { Lv1 = 3, Lv2, Lv3 }
     public HanoiLevel hanoiLevel;
 
     public GameObject[] donutPrefabs;
     public BoardBar[] bars; // L, C, R
 
+    public TextMeshProUGUI countTextUI;
+
     public static GameObject selectedDonut;
     public static bool isSelected;
+    public static BoardBar currBar;
+    public static int moveCount;
 
     IEnumerator Start()
     {
-        for (int i = (int)hanoiLevel - 1; i >= 0; i--)   // ¹İº¹¹®À¸·Î Level¸¸Å­ µµ³Ó »ı¼º
+        for (int i = (int)hanoiLevel - 1; i >= 0; i--) // ë°˜ë³µë¬¸ìœ¼ë¡œ Levelë§Œí¼ ë„ë„› ìƒì„±
         {
-            GameObject donut = Instantiate(donutPrefabs[i]); // µµ³Ó »ı¼º
+            GameObject donut = Instantiate(donutPrefabs[i]); // ë„ë„› ìƒì„±
+            donut.transform.position = new Vector3(-5f, 5f, 0); // ë„ë„› ìƒì„± ìœ„ì¹˜ : ì™¼ìª½ ë§‰ëŒ€ê¸° + ìœ„ìª½
 
-            donut.transform.position = new Vector3(-5f, 5f, 0);    // µµ³Ó »ı¼º À§Ä¡ : ¿ŞÂÊ ¸·´ë±â + À§ÂÊ
-
-            bars[0].PushDonut(donut);   // ¹æ±İ »ı¼ºÇÑ µµ³ÓÀ» ÇØ´ç BarÀÇ Stack Push
-
-            yield return new WaitForSeconds(1f);    // ¼øÂ÷ÀûÀ¸·Î »ı¼º
+            bars[0].PushDonut(donut); // ë°©ê¸ˆ ìƒì„±í•œ ë„ë„›ì„ í•´ë‹¹ Barì˜ Stack Push
+            
+            yield return new WaitForSeconds(1f); // ìˆœì°¨ì ìœ¼ë¡œ ìƒì„±
         }
+
+        moveCount = 0;
+        countTextUI.text = moveCount.ToString();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            currBar.barStack.Push(selectedDonut);
+            
+            isSelected = false;
+            selectedDonut = null;
+        }
+        
+        countTextUI.text = moveCount.ToString();
     }
 }

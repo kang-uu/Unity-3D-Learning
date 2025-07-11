@@ -5,34 +5,65 @@ public class BoardBar : MonoBehaviour
 {
     public enum BarType { Left, Center, Right }
     public BarType barType;
-
+    
     public Stack<GameObject> barStack = new Stack<GameObject>();
 
-    void OnMouseDown()
+    void OnMouseDown() // Colliderë§Œ ìˆìœ¼ë©´ ê°€ëŠ¥
     {
-        if (!HanoiTower.isSelected) // ¼±ÅÃÀÌ ¾ÈµÈ »óÅÂÀÏ ¶§
-        {
-            HanoiTower.isSelected = true;
+        if (!HanoiTower.isSelected) // ì„ íƒì´ ì•ˆëœ ìƒíƒœì¼ ë•Œ
             HanoiTower.selectedDonut = PopDonut();
-        }
-        else // ¼±ÅÃµÈ »óÅÂÀÏ ¶§
-        {
-            HanoiTower.isSelected = false;
+        else // ì„ íƒëœ ìƒíƒœì¼ ë•Œ
             PushDonut(HanoiTower.selectedDonut);
-        }
     }
 
+    public bool CheckDonut(GameObject donut)
+    {
+        if (barStack.Count > 0)
+        {
+            int pushNumber = donut.GetComponent<Donut>().donutNumber;
+            
+            GameObject peekDonut = barStack.Peek();
+            int peekNumber = peekDonut.GetComponent<Donut>().donutNumber;
+
+            if (pushNumber < peekNumber)
+                return true;
+            else
+            {
+                Debug.Log($"í˜„ì¬ ë„£ìœ¼ë ¤ëŠ” ë„ë„›ì€ {pushNumber}ì´ê³ , í•´ë‹¹ ê¸°ë‘¥ì˜ ì œì¼ ìœ„ì˜ ë„ë„›ì€ {peekNumber}ì…ë‹ˆë‹¤.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
     public void PushDonut(GameObject donut)
     {
-        donut.transform.position = transform.position + Vector3.up * 5f;
+        if (!CheckDonut(donut))
+            return;
 
-        barStack.Push(donut); // Stack¿¡ GameObject¸¦ ³Ö´Â ±â´É
+        HanoiTower.moveCount++;
+        HanoiTower.isSelected = false;
+        HanoiTower.selectedDonut = null;
+
+        donut.transform.position = transform.position + Vector3.up * 5f;
+        donut.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        donut.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        
+        barStack.Push(donut); // Stackì— GameObjectë¥¼ ë„£ëŠ” ê¸°ëŠ¥
     }
 
     public GameObject PopDonut()
     {
-        GameObject donut = barStack.Pop(); // Stack¿¡¼­ GameObject¸¦ ²¨³»´Â ±â´É
+        if (barStack.Count > 0)
+        {
+            HanoiTower.currBar = this;
+            HanoiTower.isSelected = true;
+            GameObject donut = barStack.Pop(); // Stackì—ì„œ GameObjectë¥¼ êº¼ë‚´ëŠ” ê¸°ëŠ¥
 
-        return donut; // ²¨³½ µµ³ÓÀ» ¹İÈ¯
+            return donut; // êº¼ë‚¸ ë„ë„›ì„ ë°˜í™˜
+        }
+
+        return null;
     }
 }
